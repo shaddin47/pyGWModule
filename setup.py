@@ -11,8 +11,15 @@ setup(
     author_email='scotth@cqg.com',
 
     packages=find_packages(),
-    install_requires=[
+    extras_require={
+        'math': extra_math,
+        'dev': extra_dev,
+    },
+    extra_math = [
     'returns-decorator',
-    ],
-    
+    ]
+
+    extra_dev = [
+        *extra_math,
+    ]
 )
