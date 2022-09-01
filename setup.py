@@ -16,6 +16,10 @@ extra_dev = [
 extra_bin = [
     *extra_math,
 ]
+extra_ci = [
+    *extra_test,
+    'python-coveralls',
+]
 
 setup(
     name='my_pip_package',
