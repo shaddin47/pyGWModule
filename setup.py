@@ -4,9 +4,14 @@ from my_pip_package import __version__
 
 extra_math = [
     'returns-decorator',
-]    
-extra_dev = [
+]
+extra_test = [
     *extra_math,
+    'pytest>=4',
+    'pytest-cov>=2',
+]
+extra_dev = [
+    *extra_test,
 ]
 setup(
     name='my_pip_package',
