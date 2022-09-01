@@ -1,4 +1,4 @@
-rom setuptools import setup
+from setuptools import setup
 
 from my_pip_package import __version__
 
