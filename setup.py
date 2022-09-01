@@ -5,6 +5,11 @@ from my_pip_package import __version__
 extra_math = [
     'returns-decorator',
 ]
+
+extra_bin = [
+    *extra_math,
+]
+
 extra_test = [
     *extra_math,
     'pytest>=4',
@@ -13,9 +18,7 @@ extra_test = [
 extra_dev = [
     *extra_test,
 ]
-extra_bin = [
-    *extra_math,
-]
+
 extra_ci = [
     *extra_test,
     'python-coveralls',
@@ -30,6 +33,7 @@ setup(
     author_email='scotth@cqg.com',
 
     packages=find_packages(),
+
     extras_require={
         'math': extra_math,
 
@@ -40,9 +44,17 @@ setup(
 
         'ci': extra_ci,
     },
+
     entry_points={
         'console_scripts': [
             'add=my_pip_package.math:cmd_add',
         ],
     },
+
+    classifiers=[
+        'Intended Audience :: Developers',
+
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+    ],
 )
