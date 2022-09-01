@@ -2,6 +2,12 @@ from setuptools import setup, find_packages
 
 from my_pip_package import __version__
 
+extra_math = [
+    'returns-decorator',
+]    
+extra_dev = [
+    *extra_math,
+]
 setup(
     name='my_pip_package',
     version=__version__,
@@ -15,11 +21,4 @@ setup(
         'math': extra_math,
         'dev': extra_dev,
     },
-    extra_math = [
-    'returns-decorator',
-    ]
-
-    extra_dev = [
-        *extra_math,
-    ]
 )
