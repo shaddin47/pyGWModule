@@ -13,6 +13,9 @@ extra_test = [
 extra_dev = [
     *extra_test,
 ]
+extra_bin = [
+    *extra_math,
+]
 
 setup(
     name='my_pip_package',
@@ -25,11 +28,17 @@ setup(
     packages=find_packages(),
     extras_require={
         'math': extra_math,
+
+        'bin': extra_bin,
+
+        'test': extra_test,
         'dev': extra_dev,
+
+        'ci': extra_ci,
     },
     entry_points={
-    'console_scripts': [
-        'add=my_pip_package.math:cmd_add',
+        'console_scripts': [
+            'add=my_pip_package.math:cmd_add',
         ],
     },
 )
