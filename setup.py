@@ -1,6 +1,10 @@
-from setuptools import setup, find_packages
+import os
+from setuptools import find_packages
+from setuptools import setup
 
-from my_pip_package import __version__
+with open(os.path.join("pygwmodule", "VERSION")) as file:
+    version = file.read().strip()
+
 
 extra_math = [
     'returns-decorator',
@@ -25,16 +29,24 @@ extra_ci = [
 ]
 
 setup(
-    name='my_pip_package',
-    version=__version__,
-
+    name="pygwmodule",
+    description="Python GWOps Module",
+    license="Apache License 2.0",
+    version=version,
     url='https://github.com/shaddin47/pyGWModule',
     author='Scott Haddin',
     author_email='scotth@cqg.com',
-
-    packages=find_packages(),
+    CompanyName = 'CQG',
+    Copyright = '(c) 2022 CQG. All rights reserved.',
+    packages=find_packages(include=["pygwmodule*"]),
+    package_dir={"pygwmodule": "pygwmodule"},
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=["deprecated", "requests", "six","pyodbc","getpass"],
+    platforms="Platform Independent",
 
     extras_require={
+        "kerberos": ['requests-kerberos'],
         'math': extra_math,
 
         'bin': extra_bin,
@@ -47,7 +59,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'add=my_pip_package.math:cmd_add',
+            'add=pygwmodule.math:cmd_add',
         ],
     },
 

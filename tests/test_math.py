@@ -1,6 +1,6 @@
 import random
 
-from my_pip_package.math import add, div_int, cmd_add
+from pygwmodule.math import add, div_int, cmd_add
 
 
 def test_add():

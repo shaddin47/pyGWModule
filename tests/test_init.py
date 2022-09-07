@@ -1,4 +1,4 @@
-from my_pip_package import hello_world
+from pygwmodule import hello_world
 
 
 def test_hello_world(capsys):
