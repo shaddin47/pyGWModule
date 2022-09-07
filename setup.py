@@ -42,7 +42,7 @@ setup(
     package_dir={"pygwmodule": "pygwmodule"},
     include_package_data=True,
     zip_safe=False,
-    install_requires=["deprecated", "requests", "six","pyodbc","getpass"],
+    install_requires=["deprecated", "requests", "six","pyodbc"],
     platforms="Platform Independent",
 
     extras_require={
