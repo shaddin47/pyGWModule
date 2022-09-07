@@ -26,10 +26,6 @@ class gwops_db(ServerConnect):
             self.open_GWOPSDBConnection()
         res=self.session.execute_query('Select top 10 * from Data',returns_data=True)
 
-        print(res)
         return res
 
-test=gwops_db()
-res=test.Get_GWOPSDB_GetConfigUnits(1,'test')
 
-test.close_GWOPSDBConnection()
