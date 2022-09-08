@@ -19,7 +19,9 @@ class mssql(ServerConnect):
             print("No current database session available.")
             raise ConnectionError('No current database session available.\n')
 
-        sql_query_str=f"EXEC [{SPName}]"
+        SPName = "[".append(SPName) if SPName[0] != "[" else SPName
+        SPName = SPName.append("]") if SPName[-1] != "]" else SPName
+        sql_query_str=f"EXEC {SPName}"
         if parameters != {}:
             params=[]
             for k,v in parameters.items():
@@ -27,6 +29,5 @@ class mssql(ServerConnect):
             param_str=', '.join(params)
             sql_query_str=(f'{sql_query_str} {param_str}')
     
-        if returnsData:
-            data=dbconn.execute_query(sql_query=sql_query_str,CommandTimeout=CmdTimeout,returns_data=returnsData,returns_value=returnsValue,multiple_datasets=MultipleDatasets)
-            return data
+        data=dbconn.execute_query(sql_query=sql_query_str,CommandTimeout=CmdTimeout,returns_data=returnsData,returns_value=returnsValue,multiple_datasets=MultipleDatasets)
+        return data

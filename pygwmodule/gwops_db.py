@@ -29,6 +29,5 @@ class gwops_db(ServerConnect):
         param_list["EnvironmentID"]=EnvironmentID
         param_list["Module"]=Module
         res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetUnits]",dbconn=self.session,parameters=param_list,returnsData=True)
-        #res=self.session.execute_query(sql_query='Select top 10 * from Data',returns_data=True,CommandTimeout=30)
         return res
 
