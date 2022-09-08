@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os
 import logging
-from .requests_utils import get_default_logger
-from .database import ServerConnect
+from pygwmodule.requests_utils import get_default_logger
+from pygwmodule.database import ServerConnect
 
 log = get_default_logger(__name__)
 
@@ -24,8 +24,5 @@ class gwops_db(ServerConnect):
     def Get_GWOPSDB_GetConfigUnits(self,EnvironmentID:int,Module:str):
         if self.session == None:
             self.open_GWOPSDBConnection()
-        res=self.session.execute_query('Select top 10 * from Data',returns_data=True)
-
+        res=self.session.execute_query(sql_query='Select top 10 * from Data',returns_data=True,CommandTimeout=30)
         return res
-
-

@@ -11,7 +11,6 @@ class Connection(object):
         '''
         self.drivers = []
 
-
     def pyodbc_drivers(self):
         '''
         This function can be used to provide a list of drivers in pyodbc 
@@ -22,13 +21,11 @@ class Connection(object):
             self.drivers.append(driver)
         print(str(driver))
 
-
     def driver_check(self, driver=None):
         '''
         This function is used to check if driver exists for a specific type of connection
         '''
         return [x for x in pyodbc.drivers() if x.startswith(driver)]
-
 
 # ------------------------------------
 # Connection to sql server
@@ -155,7 +152,7 @@ class ServerConnect(Connection):
         return self.execute_query(query)
 
 
-    def execute_query(self, sql_query, returns_data=False, **kwargs):
+    def execute_query(self, sql_query:str= None, CommandTimeout:int=None,returns_data:bool=False,returns_value:bool=False,multiple_datasets:bool=False,commit=False,**kwargs):
         """
         This function is used to run a SQL query and it returns data as a pandas data frame
 
@@ -167,19 +164,34 @@ class ServerConnect(Connection):
         >>> Main_DF = connection.execute_query(sql_query)
 
         """
-        data = {}
+        records = []
+        if CommandTimeout:
+            self.connection.timeout=CommandTimeout
         try:
             cursor = self.connection.cursor(**kwargs)
             with cursor:
-                results = cursor.execute(sql_query, **kwargs)
+                cursor.execute(sql_query, **kwargs)
                 if returns_data:
-                    data['columns'] = [column[0] for column in results.description]
-                    results = results.fetchall()
-                    data['data'] = [row for row in results]
-                    return data
+                    data={}
+                    data['columns'] = [column for column in cursor.description]
+                    dataframe = cursor.fetchall()
+                    data['data'] = [row for row in dataframe]
+                    records.append(data)
+                if commit:
+                    cursor.commit()    
+                if multiple_datasets:
+                    while (cursor.nextset()):
+                        data={}
+                        data['columns'] = [column for column in cursor.description]
+                        dataframe = cursor.fetchall()
+                        data['data'] = [row for row in dataframe]
+                        records.append(data)
+                        if commit:
+                            cursor.commit()                      
+            return records
         except Exception as e:
             raise RuntimeError(str(e))
-        return 
+
 
 
     def deploy(self, command, **kwargs):
@@ -213,3 +225,4 @@ class ServerConnect(Connection):
 
         '''
         self.connection.close()
+

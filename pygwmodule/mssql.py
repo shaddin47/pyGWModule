@@ -1,0 +1,32 @@
+
+#!/usr/bin/env python3
+import os
+import logging
+from pygwmodule.requests_utils import get_default_logger
+from pygwmodule.database import ServerConnect
+log = get_default_logger(__name__)
+
+class mssql(ServerConnect):
+    def __init__(self):
+        pass
+
+    def Get_DBConnection(self,server = None, database = None, trusted_connection=False, username = None, password = None):
+        session=ServerConnect(server = server, database = database, trusted_connection=trusted_connection, uid = username, pwd = password)
+        return session
+
+    def invoke_SQLStoredProcedure(self,SPName:str=None,dbconn=None,CmdTimeout:int=30,parameters:dict={},returnsData:bool=False,returnsValue:bool=False,MultipleDatasets:bool=False):
+        if dbconn==None or dbconn.connection.closed==True:
+            print("No current database session available.")
+            exit(1)
+
+        sql_query_str=f"EXEC [{SPName}]"
+        if parameters != {}:
+            params=[]
+            for k,v in parameters.items():
+                params.append(f"@{k}='{v}'" if k[0]!="@" else f"{k}='{v}'")
+            param_str=', '.join(params)
+            sql_query_str=(f'{sql_query_str} {param_str}')
+    
+        if returnsData:
+            data=dbconn.execute_query(sql_query=sql_query_str,CommandTimeout=CmdTimeout,returns_data=returnsData,returns_value=returnsValue,multiple_datasets=MultipleDatasets)
+            return data

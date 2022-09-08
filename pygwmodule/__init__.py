@@ -1,6 +1,7 @@
 __version__ = '1.0.1'
 
 from .gwops_db import gwops_db
+from .mssql import mssql
 #from .bitbucket import Bitbucket
 #from .bitbucket import Bitbucket as Stash
 #from .cloud_admin import CloudAdminOrgs, CloudAdminUsers
@@ -15,6 +16,7 @@ from .gwops_db import gwops_db
 
 __all__ = [
     "gwops_db",
+    "mssql",
     #"Jira",
     #"Bitbucket",
     #"CloudAdminOrgs",
