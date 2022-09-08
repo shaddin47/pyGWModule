@@ -154,7 +154,7 @@ class ServerConnect(Connection):
 
     def execute_query(self, sql_query:str= None, CommandTimeout:int=None,returns_data:bool=False,returns_value:bool=False,multiple_datasets:bool=False,commit=False,**kwargs):
         """
-        This function is used to run a SQL query and it returns data as a pandas data frame
+        This function is used to run a SQL query and it returns data
 
         Parameters: 
         sql_query (str): the sql query that is passed to the assigned server and database to retrieve data
