@@ -3,8 +3,8 @@
 import os
 import logging
 from datetime import datetime
-#from .requests_utils import get_default_logger
 from .database import ServerConnect
+
 log = logging.getLogger(__name__)
 
 class mssql(ServerConnect):
@@ -38,8 +38,8 @@ class mssql(ServerConnect):
             log.error("No current database session available/provided.")
             raise ConnectionError('No current database session available.\n')
 
-        SPName = "[".append(SPName) if SPName[0] != "[" else SPName
-        SPName = SPName.append("]") if SPName[-1] != "]" else SPName
+        SPName = f"[{SPName}" if SPName[0] != "[" else SPName
+        SPName = f"{SPName}]" if SPName[-1] != "]" else SPName
         sql_query_str=f"EXEC {SPName}"
         if parameters != {}:
             params=[]

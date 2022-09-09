@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 import os
 import logging
-#from pygwmodule.requests_utils import get_default_logger
 from .mssql import mssql
 
 log = logging.getLogger(__name__)
 
 class gwops_db(mssql):
-    def __init__(self,*args, **kwargs):
+    def __init__(self):
         self.server=os.environ.get('GWModule_gwopsdb_Address','vm8smonitor.cqginc.com')
         self.database=os.environ.get('GWModule_gwopsdb_Name','GWOPS')
         self.username=os.environ.get('GWModule_gwopsdb_User','prodscotth')
