@@ -2,6 +2,7 @@
 #!/usr/bin/env python3
 import os
 import logging
+from datetime import datetime
 from pygwmodule.requests_utils import get_default_logger
 from pygwmodule.database import ServerConnect
 log = get_default_logger(__name__)
@@ -13,6 +14,24 @@ class mssql(ServerConnect):
     def Get_DBConnection(self,server = None, database = None, trusted_connection=False, username = None, password = None):
         session=ServerConnect(server = server, database = database, trusted_connection=trusted_connection, uid = username, pwd = password)
         return session
+
+    def validate_timestamp(self,timestamp:str):
+        try:
+            dt=datetime.combine(datetime.strptime(timestamp, '%Y-%m-%d'),datetime.min.time())
+            return dt
+        except ValueError:
+            pass            
+        try:
+            dt=datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+            return dt
+        except ValueError:
+            pass
+        try:
+            dt=datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+            return dt
+        except ValueError:
+            raise ValueError("Incorrect data format, should be YYYY-MM-DD HH:MM:SS[.000]")
+
 
     def invoke_SQLStoredProcedure(self,SPName:str=None,dbconn=None,CmdTimeout:int=30,parameters:dict={},returnsData:bool=False,returnsValue:bool=False,MultipleDatasets:bool=False):
         if dbconn==None or dbconn.connection.closed==True:
