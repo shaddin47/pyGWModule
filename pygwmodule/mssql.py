@@ -3,8 +3,8 @@
 import os
 import logging
 from datetime import datetime
-from pygwmodule.requests_utils import get_default_logger
-from pygwmodule.database import ServerConnect
+from .requests_utils import get_default_logger
+from .database import ServerConnect
 log = get_default_logger(__name__)
 
 class mssql(ServerConnect):

@@ -2,14 +2,13 @@
 from datetime import datetime
 import os
 import logging
-from pygwmodule.requests_utils import get_default_logger
-from pygwmodule.database import ServerConnect
-from pygwmodule.mssql import mssql
+from .requests_utils import get_default_logger
+from .mssql import mssql
 
 log = get_default_logger(__name__)
 
-class gwops_db(ServerConnect):
-    def __init__(self):
+class gwops_db(mssql):
+    def __init__(self,*args, **kwargs):
         self.server=os.environ.get('GWModule_gwopsdb_Address','vm8smonitor.cqginc.com')
         self.database=os.environ.get('GWModule_gwopsdb_Name','GWOPS')
         self.username=os.environ.get('GWModule_gwopsdb_User','prodscotth')
@@ -17,8 +16,9 @@ class gwops_db(ServerConnect):
         self.timeout= 0 
         self.session=None
 
+
     def open_GWOPSDBConnection(self):
-        self.session =  ServerConnect(server = self.server, database = self.database, trusted_connection=False, uid = self.username, pwd = self.password)
+        self.session =  self.Get_DBConnection(server = self.server, database = self.database, trusted_connection=False, username = self.username, password = self.password)
 
     def close_GWOPSDBConnection(self):
         self.session.close()
@@ -29,7 +29,7 @@ class gwops_db(ServerConnect):
         param_list={}
         param_list["EnvironmentID"]=EnvironmentID
         param_list["Module"]=Module
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetUnits]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GWConfig_GetUnits]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -41,7 +41,7 @@ class gwops_db(ServerConnect):
             self.open_GWOPSDBConnection()
         param_list={}
         param_list["IHEPUnitConfigurationID"]=IHEPUnitConfigurationID       
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetIHEPUnitFeeds]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GWConfig_GetIHEPUnitFeeds]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -57,7 +57,7 @@ class gwops_db(ServerConnect):
             param_list["Module"]=module
         if instance:
             param_list["Instance"]=instance
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetMsgrESRID]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GWConfig_GetMsgrESRID]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -74,7 +74,7 @@ class gwops_db(ServerConnect):
             param_list["ConfigEnvironmentName"]=ConfigEnvironmentName
         if GIMInstallationNameLike:
             param_list["GIMInstallationNameLike"]=GIMInstallationNameLike 
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GetGWMessengersOverview]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GetGWMessengersOverview]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -85,7 +85,7 @@ class gwops_db(ServerConnect):
         if self.session == None or self.session.connection.closed==True:
             self.open_GWOPSDBConnection()
         param_list={}
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetEnvironment]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GWConfig_GetEnvironment]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -96,7 +96,7 @@ class gwops_db(ServerConnect):
         if self.session == None or self.session.connection.closed==True:
             self.open_GWOPSDBConnection()
         param_list={}
-        res=mssql().invoke_SQLStoredProcedure(SPName="[GWConfig_GetModule]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[GWConfig_GetModule]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -108,7 +108,7 @@ class gwops_db(ServerConnect):
             self.open_GWOPSDBConnection()
         param_list={}
         param_list["Cluster"]=Cluster
-        res=mssql().invoke_SQLStoredProcedure(SPName="[PSClusterCache_GetCluster]",dbconn=self.session,parameters=param_list,returnsData=True)
+        res=self.invoke_SQLStoredProcedure(SPName="[PSClusterCache_GetCluster]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.session.close()
         except:
@@ -129,7 +129,7 @@ class gwops_db(ServerConnect):
             tsResourceAllocationLastUpdate=mssql().validate_timestamp(tsResourceAllocationLastUpdate)
             param_list["tsResourceAllocationLastUpdate"]=tsResourceAllocationLastUpdate
 
-        rowsAffected=mssql().invoke_SQLStoredProcedure(SPName="[PSClusterCache_UpsertCluster]",dbconn=self.session,parameters=param_list,)
+        rowsAffected=self.invoke_SQLStoredProcedure(SPName="[PSClusterCache_UpsertCluster]",dbconn=self.session,parameters=param_list,)
         try:
             self.session.close()
         except:
@@ -137,3 +137,5 @@ class gwops_db(ServerConnect):
         return rowsAffected
 
 
+test=gwops_db().Get_GWOPSDB_GetConfigUnits(1,'IHEP')
+print(test)
