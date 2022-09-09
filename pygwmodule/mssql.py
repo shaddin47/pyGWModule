@@ -34,6 +34,8 @@ class mssql(ServerConnect):
 
 
     def invoke_SQLStoredProcedure(self,SPName:str=None,dbconn=None,CmdTimeout:int=30,parameters:dict={},returnsData:bool=False,returnsValue:bool=False,MultipleDatasets:bool=False):
+        if dbconn==None and self.session is not None:
+            dbconn=self.session
         if dbconn==None or dbconn.connection.closed==True:
             log.error("No current database session available/provided.")
             raise ConnectionError('No current database session available.\n')
