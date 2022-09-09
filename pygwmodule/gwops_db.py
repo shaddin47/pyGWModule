@@ -137,5 +137,3 @@ class gwops_db(mssql):
         return rowsAffected
 
 
-test=gwops_db().Get_GWOPSDB_GetConfigUnits(1,'IHEP')
-print(test)
