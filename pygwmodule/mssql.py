@@ -3,9 +3,9 @@
 import os
 import logging
 from datetime import datetime
-from .requests_utils import get_default_logger
+#from .requests_utils import get_default_logger
 from .database import ServerConnect
-log = get_default_logger(__name__)
+log = logging.getLogger(__name__)
 
 class mssql(ServerConnect):
     def __init__(self):
@@ -35,7 +35,7 @@ class mssql(ServerConnect):
 
     def invoke_SQLStoredProcedure(self,SPName:str=None,dbconn=None,CmdTimeout:int=30,parameters:dict={},returnsData:bool=False,returnsValue:bool=False,MultipleDatasets:bool=False):
         if dbconn==None or dbconn.connection.closed==True:
-            print("No current database session available.")
+            log.error("No current database session available1.")
             raise ConnectionError('No current database session available.\n')
 
         SPName = "[".append(SPName) if SPName[0] != "[" else SPName
