@@ -37,9 +37,7 @@ class mssql(ServerConnect):
         if dbconn==None and self.session is not None:
             dbconn=self.session
         if dbconn==None or dbconn.connection.closed==True:
-            log.error("No current database session available/provided.")
             raise ConnectionError('No current database session available.\n')
-
         SPName = f"[{SPName}" if SPName[0] != "[" else SPName
         SPName = f"{SPName}]" if SPName[-1] != "]" else SPName
         sql_query_str=f"EXEC {SPName}"
