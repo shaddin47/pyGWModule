@@ -7,10 +7,10 @@ log = logging.getLogger(__name__)
 
 class gwops_db(mssql):
     def __init__(self):
-        self.server=os.environ.get('GWModule_gwopsdb_Address','vm8smonitor.cqginc.com')
+        self.server=os.environ.get('GWModule_gwopsdb_Address','gwopsdb.cqginc.com')
         self.database=os.environ.get('GWModule_gwopsdb_Name','GWOPS')
-        self.username=os.environ.get('GWModule_gwopsdb_User','prodscotth')
-        self.password=os.environ.get('GWModule_gwopsdb_Pass','P@ssword12')
+        self.username=os.environ.get('GWModule_gwopsdb_User','adrenalin')
+        self.password=os.environ.get('GWModule_gwopsdb_Pass','sh00tME')
         self.timeout= 0 
         self.session=self.open_GWOPSDBConnection()
 
@@ -105,7 +105,7 @@ class gwops_db(mssql):
         if self.session == None or self.session.connection.closed==True:
             self.open_GWOPSDBConnection()
         param_list={}
-        param_list["Cluster"]=Cluster
+        param_list["Name"]=Cluster
         res=self.invoke_SQLStoredProcedure(SPName="[PSClusterCache_GetCluster]",dbconn=self.session,parameters=param_list,returnsData=True)
         try:
             self.close_GWOPSDBConnection()
@@ -135,3 +135,7 @@ class gwops_db(mssql):
         return rowsAffected
 
 
+if __name__ == "__main__":
+	ham=gwops_db()
+	boxes=ham.Get_GWOPSDB_Cluster_Cache(Cluster='DGW12APPCLUSTER.cqginc.com')
+	print(boxes)

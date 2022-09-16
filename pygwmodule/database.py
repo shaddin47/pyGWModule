@@ -152,7 +152,7 @@ class ServerConnect(Connection):
         return self.execute_query(query)
 
 
-    def execute_query(self, sql_query:str= None, CommandTimeout:int=None,returns_data:bool=False,returns_value:bool=False,multiple_datasets:bool=False,commit=False,**kwargs):
+    def execute_query(self, sql_query:str= None, CommandTimeout:int=None,returns_data:bool=False,returns_value:bool=False,multiple_datasets:bool=False,commit=False,params:list=[]):
         """
         This function is used to run a SQL query and it returns data
 
@@ -168,9 +168,9 @@ class ServerConnect(Connection):
         if CommandTimeout:
             self.connection.timeout=CommandTimeout
         try:
-            cursor = self.connection.cursor(**kwargs)
+            cursor = self.connection.cursor()
             with cursor:
-                cursor.execute(sql_query, **kwargs)
+                cursor.execute(sql_query, params)
                 if returns_data:
                     data={}
                     data['columns'] = [column for column in cursor.description]
